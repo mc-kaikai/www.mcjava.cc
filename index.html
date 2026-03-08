@@ -560,7 +560,7 @@
             <span class="hammer">🌍</span>
         </div>
 
-        <!-- 状态面板 - 直接在文字后面加延迟提示 -->
+        <!-- 状态面板 -->
         <div class="status-panel">
             <div class="status-container">
                 <div class="status-indicator">
@@ -642,51 +642,29 @@
         const serverInfoSpan = document.getElementById('serverInfo');
         const refreshBtn = document.getElementById('refreshBtn');
 
+        // 复制功能
         document.getElementById('copy-ip-btn').addEventListener('click', function() {
             const ipText = SERVER_IP;
             
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(ipText).then(() => {
-                    showCopySuccess();
-                }).catch(err => {
-                    fallbackCopy(ipText);
+                    const btn = this;
+                    const originalText = btn.innerText;
+                    btn.innerText = '✅ 复制成功!';
+                    btn.style.background = '#258a6e';
+                    setTimeout(() => {
+                        btn.innerText = originalText;
+                        btn.style.background = '#2f6a5e';
+                    }, 1600);
+                }).catch(() => {
+                    alert('复制失败，请手动复制: ' + ipText);
                 });
             } else {
-                fallbackCopy(ipText);
+                alert('请手动复制: ' + ipText);
             }
         });
 
-        function fallbackCopy(text) {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.select();
-            textarea.setSelectionRange(0, 99999);
-            
-            try {
-                document.execCommand('copy');
-                showCopySuccess();
-            } catch (err) {
-                alert('复制失败，请手动复制: ' + text);
-            }
-            
-            document.body.removeChild(textarea);
-        }
-
-        function showCopySuccess() {
-            const btn = document.getElementById('copy-ip-btn');
-            const originalText = btn.innerText;
-            btn.innerText = '✅ 复制成功!';
-            btn.style.background = '#258a6e';
-            
-            setTimeout(() => {
-                btn.innerText = originalText;
-                btn.style.background = '#2f6a5e';
-            }, 1600);
-        }
-
+        // 检测服务器状态
         async function checkServerStatus() {
             statusDot.className = 'status-dot checking';
             statusText.textContent = '检测中...';
@@ -701,13 +679,10 @@
                     statusDot.className = 'status-dot online';
                     statusText.textContent = '服务器在线';
                     
+                    // 直接获取玩家数量 - 根据你发的数据格式
                     let players = 0;
-                    if (data.players && typeof data.players.online === 'number') {
+                    if (data.players && data.players.online !== undefined) {
                         players = data.players.online;
-                    } else if (typeof data.players === 'number') {
-                        players = data.players;
-                    } else if (data.players && Array.isArray(data.players)) {
-                        players = data.players.length;
                     }
                     
                     serverInfoSpan.textContent = `Minecraft 服务器 · ${players}/${MAX_PLAYERS} 人在线 测量结果可能有延迟`;
@@ -717,7 +692,6 @@
                     serverInfoSpan.textContent = 'Minecraft 服务器 · 0/50 人在线 测量结果可能有延迟';
                 }
             } catch (error) {
-                console.error('检测出错:', error);
                 statusDot.className = 'status-dot offline';
                 statusText.textContent = '服务器离线';
                 serverInfoSpan.textContent = 'Minecraft 服务器 · 0/50 人在线 测量结果可能有延迟';
