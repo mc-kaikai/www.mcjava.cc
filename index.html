@@ -29,7 +29,6 @@
             position: relative;
         }
 
-        /* 玻璃质感的卡片容器 */
         .server-card {
             max-width: 1200px;
             width: 100%;
@@ -43,7 +42,6 @@
             padding: 2rem 2rem 2.5rem 2rem;
         }
 
-        /* 自定义像素点缀 (模拟草块/泥土) */
         .pixel-dots {
             position: relative;
         }
@@ -59,7 +57,6 @@
             z-index: 0;
         }
 
-        /* 头部区域 */
         .hero {
             display: flex;
             flex-direction: column;
@@ -137,7 +134,6 @@
             backdrop-filter: blur(2px);
         }
 
-        /* 网格信息区 */
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -185,7 +181,6 @@
             font-size: 1.05rem;
         }
 
-        /* 纯生存高亮标记 */
         .pure-survival {
             display: flex;
             align-items: center;
@@ -204,7 +199,6 @@
             font-size: 1.8rem;
         }
 
-        /* 图片画廊风格 */
         .screenshot-showcase {
             display: flex;
             flex-wrap: wrap;
@@ -233,7 +227,6 @@
             box-shadow: 0 0 18px #42f5ce;
         }
 
-        /* 模拟截图图案 */
         .screenshot-item:nth-child(1) {
             background: linear-gradient(145deg, #355e4a, #1e3b2a);
         }
@@ -326,7 +319,6 @@
             z-index: 2;
         }
 
-        /* 状态面板 - 精简版 */
         .status-panel {
             background: rgba(0, 10, 12, 0.7);
             border-radius: 3rem;
@@ -438,7 +430,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* 加入面板 */
         .join-panel {
             background: rgba(0, 10, 12, 0.7);
             border-radius: 3rem;
@@ -489,7 +480,6 @@
             transform: scale(0.97);
         }
 
-        /* 不加端口提示 */
         .no-port {
             font-size: 1rem;
             margin-top: 1rem;
@@ -514,7 +504,6 @@
             margin-top: 1.2rem;
         }
 
-        /* 移动端优化 */
         @media (max-width: 700px) {
             .server-card { padding: 1.5rem; }
             .minecraft-title { font-size: 2.2rem; }
@@ -532,7 +521,6 @@
             .ip-copy-block .ip { font-size: 1.3rem; margin-right: 0; }
         }
 
-        /* 右下角水印 */
         .watermark {
             position: fixed;
             bottom: 12px;
@@ -553,11 +541,9 @@
     </style>
 </head>
 <body>
-    <!-- 右下角固定水印 -->
     <div class="watermark">内容由 DeepSeek 生成</div>
 
     <div class="server-card pixel-dots">
-        <!-- 头部区域 -->
         <div class="hero">
             <div class="version-badge">⚡ Java版 1.21.x 便捷生存 ⚡</div>
             <h1 class="minecraft-title">插件生存</h1>
@@ -568,14 +554,13 @@
             <div class="copy-note">📋 点击下方按钮自动复制IP · 基岩版不支持</div>
         </div>
 
-        <!-- 插件辅助标识 -->
         <div class="pure-survival">
             <span class="hammer">🛠️</span>
             <span>领地 · /tpa · /home · /back · 原版生存 1.21.x</span>
             <span class="hammer">🌍</span>
         </div>
 
-        <!-- 服务器状态检测区域 - 修复版 -->
+        <!-- 状态面板 - 直接在文字后面加延迟提示 -->
         <div class="status-panel">
             <div class="status-container">
                 <div class="status-indicator">
@@ -583,7 +568,7 @@
                     <span class="status-text" id="statusText">检测中...</span>
                 </div>
                 <div class="status-detail" id="statusDetail">
-                    <span id="serverInfo">Minecraft 服务器 · 0/50 人在线</span>
+                    <span id="serverInfo">Minecraft 服务器 · 0/50 人在线 测量结果可能有延迟</span>
                 </div>
             </div>
             <button class="refresh-btn" id="refreshBtn">
@@ -591,7 +576,6 @@
             </button>
         </div>
 
-        <!-- 特性网格 -->
         <div class="info-grid">
             <div class="feature-card">
                 <div class="feature-icon">🏡</div>
@@ -615,7 +599,6 @@
             </div>
         </div>
 
-        <!-- 模拟截图 -->
         <div class="screenshot-showcase">
             <div class="screenshot-item">
                 <span class="screenshot-label">🌲 桦木森林</span>
@@ -631,7 +614,6 @@
             </div>
         </div>
 
-        <!-- 加入面板 -->
         <div class="join-panel">
             <div class="ip-copy-block" id="ip-copy-block">
                 <span class="ip" id="server-ip-display">mc.kaikai.cc.cd</span>
@@ -639,33 +621,27 @@
             </div>
         </div>
 
-        <!-- 不加端口说明 + 离线可进 -->
         <div style="text-align: center; margin-top: 0.8rem;">
             <span class="no-port">🚫 直接使用上方IP，无需添加端口 &nbsp;&nbsp; ✦ &nbsp;&nbsp; 正版验证: 关闭 (离线可进)</span>
         </div>
 
         <hr>
 
-        <!-- 版本信息 -->
         <div class="footer-note">
             <span>⏵ 兼容版本: 1.21.x (1.21 - 1.21.11) · 离线玩家可进</span>
             <span>⏴ 社区服务器  ·  和谐生存</span>
         </div>
     </div>
 
-    <!-- 自动复制功能 + 修复版服务器状态检测 -->
     <script>
-        // 服务器信息
         const SERVER_IP = 'mc.kaikai.cc.cd';
         const MAX_PLAYERS = 50;
         
-        // DOM 元素
         const statusDot = document.getElementById('statusDot');
         const statusText = document.getElementById('statusText');
         const serverInfoSpan = document.getElementById('serverInfo');
         const refreshBtn = document.getElementById('refreshBtn');
 
-        // 复制功能
         document.getElementById('copy-ip-btn').addEventListener('click', function() {
             const ipText = SERVER_IP;
             
@@ -711,55 +687,47 @@
             }, 1600);
         }
 
-        // ========== 修复版服务器状态检测 ==========
-        // 直接用最简单的逻辑，确保能用
-        
         async function checkServerStatus() {
-            // 检测中
             statusDot.className = 'status-dot checking';
             statusText.textContent = '检测中...';
-            serverInfoSpan.textContent = 'Minecraft 服务器 · 0/50 人在线';
+            serverInfoSpan.textContent = 'Minecraft 服务器 · 0/50 人在线 测量结果可能有延迟';
             refreshBtn.classList.add('loading');
             
             try {
-                // 直接请求，不加复杂逻辑
                 const response = await fetch(`https://api.mcsrvstat.us/2/${SERVER_IP}`);
                 const data = await response.json();
                 
-                console.log('API返回数据:', data); // 可以在控制台看返回什么
-                
-                // 判断是否在线 - 最简单的方式
                 if (data && data.online === true) {
-                    // 在线
                     statusDot.className = 'status-dot online';
                     statusText.textContent = '服务器在线';
                     
-                    const players = data.players ? data.players.online : 0;
-                    serverInfoSpan.textContent = `Minecraft 服务器 · ${players}/${MAX_PLAYERS} 人在线`;
+                    let players = 0;
+                    if (data.players && typeof data.players.online === 'number') {
+                        players = data.players.online;
+                    } else if (typeof data.players === 'number') {
+                        players = data.players;
+                    } else if (data.players && Array.isArray(data.players)) {
+                        players = data.players.length;
+                    }
+                    
+                    serverInfoSpan.textContent = `Minecraft 服务器 · ${players}/${MAX_PLAYERS} 人在线 测量结果可能有延迟`;
                 } else {
-                    // 离线
                     statusDot.className = 'status-dot offline';
                     statusText.textContent = '服务器离线';
-                    serverInfoSpan.textContent = 'Minecraft 服务器 · 0/50 人在线';
+                    serverInfoSpan.textContent = 'Minecraft 服务器 · 0/50 人在线 测量结果可能有延迟';
                 }
             } catch (error) {
                 console.error('检测出错:', error);
-                // 出错也显示离线
                 statusDot.className = 'status-dot offline';
                 statusText.textContent = '服务器离线';
-                serverInfoSpan.textContent = 'Minecraft 服务器 · 0/50 人在线';
+                serverInfoSpan.textContent = 'Minecraft 服务器 · 0/50 人在线 测量结果可能有延迟';
             } finally {
                 refreshBtn.classList.remove('loading');
             }
         }
 
-        // 刷新按钮
         refreshBtn.addEventListener('click', checkServerStatus);
-
-        // 页面加载
         window.addEventListener('load', checkServerStatus);
-        
-        // 定时刷新（30秒一次）
         setInterval(checkServerStatus, 30000);
     </script>
 </body>
