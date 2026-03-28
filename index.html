@@ -672,14 +672,14 @@
             refreshBtn.classList.add('loading');
             
             try {
-                const response = await fetch(`https://api.mcsrvstat.us/2/${SERVER_IP}`);
+                const response = await fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}`);
                 const data = await response.json();
                 
                 if (data && data.online === true) {
                     statusDot.className = 'status-dot online';
                     statusText.textContent = '服务器在线';
                     
-                    // 直接获取玩家数量 - 根据你发的数据格式
+                    // 直接获取玩家数量
                     let players = 0;
                     if (data.players && data.players.online !== undefined) {
                         players = data.players.online;
