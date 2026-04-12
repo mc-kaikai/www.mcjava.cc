@@ -669,7 +669,7 @@
             refreshBtn.classList.add('loading');
             
             try {
-                const response = await fetch('https://api.kaikai.cc.cd:8443/status');
+                const response = await fetch('https://api.kaikai.cc.cd/status');
                 const data = await response.json();
                 
                 if (data && data.online === true) {
