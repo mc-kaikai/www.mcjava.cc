@@ -664,7 +664,7 @@
             }
         });
 
-        // 检测服务器状态
+        // 检测服务器状态 (适配 minecraftservers.cn API)
         async function checkServerStatus() {
             statusDot.className = 'status-dot checking';
             statusText.textContent = '检测中...';
@@ -672,17 +672,19 @@
             refreshBtn.classList.add('loading');
             
             try {
-                const response = await fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}`);
-                const data = await response.json();
+                // 调用新的 API 地址
+                const response = await fetch(`https://www.minecraftservers.cn/api/query?ip=${SERVER_IP}`);
+                const result = await response.json();
                 
-                if (data && data.online === true) {
+                // 根据新 API 返回的 JSON 格式进行判断
+                if (result && result.success === true && result.data) {
                     statusDot.className = 'status-dot online';
                     statusText.textContent = '服务器在线';
                     
-                    // 直接获取玩家数量
+                    // 从 data 对象中获取玩家数量，字段名为 'p'
                     let players = 0;
-                    if (data.players && data.players.online !== undefined) {
-                        players = data.players.online;
+                    if (result.data.p !== undefined) {
+                        players = result.data.p;
                     }
                     
                     serverInfoSpan.textContent = `Minecraft 服务器 · ${players}/${MAX_PLAYERS} 人在线 测量结果可能有延迟`;
@@ -695,6 +697,7 @@
                 statusDot.className = 'status-dot offline';
                 statusText.textContent = '服务器离线';
                 serverInfoSpan.textContent = 'Minecraft 服务器 · 0/50 人在线 测量结果可能有延迟';
+                console.error('状态查询失败:', error);
             } finally {
                 refreshBtn.classList.remove('loading');
             }
