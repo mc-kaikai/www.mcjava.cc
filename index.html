@@ -664,7 +664,7 @@
             }
         });
 
-        // 检测服务器状态 (显示玩家数量)
+        // 检测服务器状态 (使用自己的 Python 后端)
         async function checkServerStatus() {
             statusDot.className = 'status-dot checking';
             statusText.textContent = '检测中...';
@@ -672,18 +672,13 @@
             refreshBtn.classList.add('loading');
             
             try {
-                // 使用稳定且支持IPv6的API
-                const response = await fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}`);
+                const response = await fetch('https://mc.kaikai.cc.cd:25567/status');
                 const data = await response.json();
                 
                 if (data && data.online === true) {
                     statusDot.className = 'status-dot online';
                     statusText.textContent = '服务器在线';
-                    
-                    // 获取玩家数量，如果没有这个字段则默认为0
-                    let players = (data.players && data.players.online !== undefined) ? data.players.online : 0;
-                    
-                    serverInfoSpan.textContent = `Minecraft 服务器 · ${players}/${MAX_PLAYERS} 人在线`;
+                    serverInfoSpan.textContent = `Minecraft 服务器 · ${data.players || 0}/${data.max || 50} 人在线`;
                 } else {
                     statusDot.className = 'status-dot offline';
                     statusText.textContent = '服务器离线';
